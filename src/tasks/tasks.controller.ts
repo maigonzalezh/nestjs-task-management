@@ -14,7 +14,8 @@ import { UpdateTaskStatusDto } from './dto/update-task-status.dto';
 import { TaskStatus } from './task-status.enum';
 import { Task } from './tasks.entity';
 import { TasksService } from './tasks.service';
-
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+@ApiTags('tasks')
 @Controller('tasks')
 export class TasksController {
   constructor(private tasksService: TasksService) {}
@@ -25,6 +26,11 @@ export class TasksController {
   }
 
   @Get('/:id')
+  @ApiResponse({
+    status: 200,
+    description: 'The found record',
+    type: Task,
+  })
   getTaskById(@Param('id') id: string): Promise<Task> {
     return this.tasksService.getTaskById(id);
   }
@@ -43,6 +49,8 @@ export class TasksController {
   }
 
   @Post()
+  @ApiOperation({ summary: 'Create task' })
+  @ApiResponse({ status: 403, description: 'Forbidden.' })
   createTask(@Body() createTaskDto: CreateTaskDto): Promise<Task> {
     return this.tasksService.createTask(createTaskDto);
   }
