@@ -11,7 +11,7 @@ export class AuthCredentialsDto {
   username: string;
 
   @ApiProperty({
-    example: '123456',
+    example: 'Asdf1234',
   })
   @IsString()
   @MinLength(8)
