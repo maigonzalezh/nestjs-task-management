@@ -1,4 +1,4 @@
-import { ValidationPipe } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
@@ -6,7 +6,7 @@ import { TransformInterceptor } from './transform.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-
+  const logger = new Logger();
   const config = new DocumentBuilder()
     .setTitle('Tasks documentation')
     .setDescription('NestJS Course API description')
@@ -28,6 +28,8 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document);
   app.useGlobalInterceptors(new TransformInterceptor());
   app.useGlobalPipes(new ValidationPipe());
-  await app.listen(3000);
+  const port = 3000;
+  await app.listen(port);
+  logger.log(`Application is running on port ${port}`);
 }
 bootstrap();
